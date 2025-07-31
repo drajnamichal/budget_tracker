@@ -92,7 +92,8 @@ const App: React.FC = () => {
   }, []);
 
   const deleteExpense = useCallback((id: string) => {
-    setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id && !expense.isFixed));
+    // All expenses are now locked and cannot be deleted
+    return;
   }, []);
 
   const addToDoItem = useCallback((text: string) => {

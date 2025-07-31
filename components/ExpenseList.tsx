@@ -20,29 +20,15 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense }) 
           expenses.map((expense) => (
             <div 
               key={expense.id} 
-              className={`flex items-center justify-between p-3 rounded-lg ${
-                expense.isFixed 
-                  ? 'bg-slate-100' 
-                  : 'bg-slate-50 hover:bg-slate-100 transition-colors'
-              }`}
+              className="flex items-center justify-between p-3 rounded-lg bg-slate-100"
             >
               <div>
                 <p className="font-medium text-slate-800">{expense.description}</p>
                 <p className="text-sm text-slate-600">{formatCurrency(expense.amount)}</p>
               </div>
-              {expense.isFixed ? (
-                <span className="p-2 text-slate-400" title="Táto položka je fixná a nedá sa vymazať.">
-                  <LockIcon />
-                </span>
-              ) : (
-                <button
-                  onClick={() => onDeleteExpense(expense.id)}
-                  className="p-2 rounded-full text-slate-500 hover:bg-red-100 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
-                  aria-label="Vymazať položku"
-                >
-                  <TrashIcon />
-                </button>
-              )}
+              <span className="p-2 text-slate-400" title="Táto položka je fixná a nedá sa vymazať.">
+                <LockIcon />
+              </span>
             </div>
           ))
         )}
