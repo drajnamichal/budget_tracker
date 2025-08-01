@@ -2,6 +2,7 @@ import React from 'react';
 import * as XLSX from 'xlsx';
 import { type Expense } from '../types';
 import { formatCurrency } from '../utils';
+import { ExportIcon } from './icons';
 
 interface ExportButtonProps {
   expenses: Expense[];
@@ -100,20 +101,8 @@ const ExportButton: React.FC<ExportButtonProps> = ({
       className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
       title="Exportovať do Excel súboru"
     >
-      <svg 
-        className="w-4 h-4 mr-2" 
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-      >
-        <path 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-          strokeWidth={2} 
-          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
-        />
-      </svg>
-      Exportovať do Excel
+      <ExportIcon />
+      <span className="ml-2">Exportovať do Excel</span>
     </button>
   );
 };

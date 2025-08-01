@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { type Expense } from '../types';
 import { formatCurrency } from '../utils';
 import { TrashIcon, LockIcon, EditIcon, CheckIcon, XIcon } from './icons';
+import { CategoryEmoji, MoneyEmoji } from './icons';
 import ExportButton from './ExportButton';
 
 interface ExpenseListProps {
@@ -51,7 +52,10 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
-      <h2 className="text-xl font-bold text-slate-900 mb-4">Zoznam výdavkov</h2>
+      <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <CategoryEmoji className="text-xl" />
+        Zoznam výdavkov
+      </h2>
       <div className="space-y-3 max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-2">
         {expenses.length === 0 ? (
           <p className="text-slate-500 text-center py-8">Zatiaľ žiadne výdavky. Pridajte prvú položku!</p>
@@ -94,7 +98,10 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                 <>
                   <div>
                     <p className="font-medium text-slate-800">{expense.description}</p>
-                    <p className="text-sm text-slate-600">{formatCurrency(expense.amount)}</p>
+                    <p className="text-sm text-slate-600 flex items-center gap-1">
+                      <MoneyEmoji className="text-xs" />
+                      {formatCurrency(expense.amount)}
+                    </p>
                   </div>
                   <div className="flex items-center">
                     {expense.isFixed ? (

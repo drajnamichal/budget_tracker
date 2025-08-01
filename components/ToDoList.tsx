@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { type ToDoItem } from '../types';
 import { TrashIcon } from './icons';
+import { CheckEmoji, CategoryEmoji, PlusEmoji } from './icons';
 
 interface ToDoListProps {
   items: ToDoItem[];
@@ -22,7 +23,10 @@ const ToDoList: React.FC<ToDoListProps> = ({ items, onAddItem, onDeleteItem }) =
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
-      <h2 className="text-xl font-bold text-slate-900 mb-4">Zoznam na nákup (To-Do)</h2>
+      <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <CategoryEmoji className="text-xl" />
+        Zoznam na nákup (To-Do)
+      </h2>
       
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
@@ -35,16 +39,20 @@ const ToDoList: React.FC<ToDoListProps> = ({ items, onAddItem, onDeleteItem }) =
         />
         <button
           type="submit"
-          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors flex items-center gap-1"
           aria-label="Pridať položku do zoznamu"
         >
+          <PlusEmoji className="text-xs" />
           Pridať
         </button>
       </form>
 
       <div className="mt-4 space-y-2 max-h-[250px] overflow-y-auto pr-2">
         {items.length === 0 ? (
-          <p className="text-slate-500 text-center py-4">Všetko nakúpené! Skvelá práca.</p>
+          <p className="text-slate-500 text-center py-4 flex items-center justify-center gap-2">
+            <CheckEmoji />
+            Všetko nakúpené! Skvelá práca.
+          </p>
         ) : (
           items.map(item => (
             <div 

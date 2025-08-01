@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { formatCurrency } from '../utils';
+import { ChartEmoji, MoneyEmoji, HouseEmoji } from './icons';
 
 interface SummaryProps {
   totalBudget: number;
@@ -27,17 +28,32 @@ const Summary: React.FC<SummaryProps> = ({ totalBudget, totalSpent, remainingBud
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="mb-4 text-center">
+        <h2 className="text-xl font-bold text-slate-900 flex items-center justify-center gap-2">
+          <ChartEmoji className="text-xl" />
+          Súhrn rozpočtu
+        </h2>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
         <div>
-          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Celkový rozpočet</h3>
+          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <HouseEmoji className="text-sm" />
+            Celkový rozpočet
+          </h3>
           <p className="text-2xl font-semibold text-slate-800 mt-1">{formatCurrency(totalBudget)}</p>
         </div>
         <div>
-          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Minuté</h3>
+          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <MoneyEmoji className="text-sm" />
+            Minuté
+          </h3>
           <p className="text-2xl font-semibold text-rose-600 mt-1">{formatCurrency(totalSpent)}</p>
         </div>
         <div>
-          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Zostáva</h3>
+          <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <MoneyEmoji className="text-sm" />
+            Zostáva
+          </h3>
           <p className="text-2xl font-semibold text-emerald-600 mt-1">{formatCurrency(remainingBudget)}</p>
         </div>
       </div>

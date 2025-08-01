@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { type Expense } from '../types';
+import { MoneyEmoji, PlusEmoji } from './icons';
 
 interface ExpenseFormProps {
   onAddExpense: (expense: Omit<Expense, 'id' | 'createdAt'>) => void;
@@ -32,7 +33,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAddExpense }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
-      <h2 className="text-xl font-bold text-slate-900 mb-4">Pridať novú položku</h2>
+      <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <PlusEmoji className="text-xl" />
+        Pridať novú položku
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-slate-700">
@@ -49,18 +53,26 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAddExpense }) => {
           />
         </div>
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-slate-700">
+          <label htmlFor="amount" className="block text-sm font-medium text-slate-700 flex items-center gap-1">
+            <MoneyEmoji className="text-sm" />
             Suma (€)
           </label>
-          <input
-            type="number"
-            id="amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Napr. 5000"
-            className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-              focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          <div className="relative mt-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-slate-500 text-sm">€</span>
+            </div>
+            <input
+              type="number"
+              id="amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              className="block w-full pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button
