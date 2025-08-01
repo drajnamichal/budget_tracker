@@ -44,7 +44,7 @@ const Summary: React.FC<SummaryProps> = ({ totalBudget, totalSpent, remainingBud
         </div>
         <div>
           <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1">
-            <MoneyEmoji className="text-sm" />
+            <span className="text-sm" role="img" aria-label="money spent">💸</span>
             Minuté
           </h3>
           <p className="text-2xl font-semibold text-rose-600 mt-1">{formatCurrency(totalSpent)}</p>
