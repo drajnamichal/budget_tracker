@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { collection, query, orderBy, onSnapshot, writeBatch, doc, addDoc, getDocs, where, deleteDoc, updateDoc } from 'firebase/firestore';
 import { type Expense, type ToDoItem } from './types';
 import { TOTAL_BUDGET } from './constants';
+import { sortExpenses } from './utils';
 import Summary from './components/Summary';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
@@ -59,8 +60,8 @@ const App: React.FC = () => {
          const expensesData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-        } as Expense)).sort((a, b) => (a.isFixed === b.isFixed) ? 0 : a.isFixed ? 1 : -1);
-        setExpenses(expensesData);
+        } as Expense));
+        setExpenses(sortExpenses(expensesData));
       }
       setLoading(false);
     }, (error) => {

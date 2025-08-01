@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { type Expense } from '../types';
 
 interface ExpenseFormProps {
-  onAddExpense: (expense: Omit<Expense, 'id'>) => void;
+  onAddExpense: (expense: Omit<Expense, 'id' | 'createdAt'>) => void;
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAddExpense }) => {
