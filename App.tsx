@@ -208,7 +208,7 @@ const App: React.FC = () => {
         </main>
 
         <footer className="text-center mt-12 text-sm text-slate-500">
-          <p>Vytvorené s láskou pre spoločné ciele.</p>
+          <p>Vytvorené s láskou pre spoločné ciele ❤️</p>
         </footer>
       </div>
     </div>
