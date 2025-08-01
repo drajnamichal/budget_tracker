@@ -3,14 +3,25 @@ import React, { useState } from 'react';
 import { type Expense } from '../types';
 import { formatCurrency } from '../utils';
 import { TrashIcon, LockIcon, EditIcon, CheckIcon, XIcon } from './icons';
+import ExportButton from './ExportButton';
 
 interface ExpenseListProps {
   expenses: Expense[];
   onDeleteExpense: (id: string) => void;
   onUpdateExpense: (id: string, newValues: { description: string, amount: number }) => void;
+  totalBudget: number;
+  totalSpent: number;
+  remainingBudget: number;
 }
 
-const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense, onUpdateExpense }) => {
+const ExpenseList: React.FC<ExpenseListProps> = ({ 
+  expenses, 
+  onDeleteExpense, 
+  onUpdateExpense, 
+  totalBudget, 
+  totalSpent, 
+  remainingBudget 
+}) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedDescription, setEditedDescription] = useState('');
   const [editedAmount, setEditedAmount] = useState('');
@@ -114,6 +125,18 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense, on
             </div>
           ))
         )}
+      </div>
+      
+      {/* Export Button */}
+      <div className="mt-4 pt-4 border-t border-slate-200">
+        <div className="flex justify-center">
+          <ExportButton 
+            expenses={expenses}
+            totalBudget={totalBudget}
+            totalSpent={totalSpent}
+            remainingBudget={remainingBudget}
+          />
+        </div>
       </div>
     </div>
   );
