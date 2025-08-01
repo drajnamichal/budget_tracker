@@ -13,6 +13,8 @@ interface ExpenseListProps {
   totalBudget: number;
   totalSpent: number;
   remainingBudget: number;
+  onExportSuccess?: (message: string) => void;
+  onExportError?: (message: string) => void;
 }
 
 const ExpenseList: React.FC<ExpenseListProps> = ({ 
@@ -21,7 +23,9 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
   onUpdateExpense, 
   totalBudget, 
   totalSpent, 
-  remainingBudget 
+  remainingBudget,
+  onExportSuccess,
+  onExportError
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedDescription, setEditedDescription] = useState('');
@@ -142,6 +146,8 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
             totalBudget={totalBudget}
             totalSpent={totalSpent}
             remainingBudget={remainingBudget}
+            onSuccess={onExportSuccess}
+            onError={onExportError}
           />
         </div>
       </div>

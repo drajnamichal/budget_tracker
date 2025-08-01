@@ -9,13 +9,17 @@ interface ExportButtonProps {
   totalBudget: number;
   totalSpent: number;
   remainingBudget: number;
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
 }
 
 const ExportButton: React.FC<ExportButtonProps> = ({ 
   expenses, 
   totalBudget, 
   totalSpent, 
-  remainingBudget 
+  remainingBudget,
+  onSuccess,
+  onError
 }) => {
 
   const exportToExcel = () => {
@@ -88,10 +92,19 @@ const ExportButton: React.FC<ExportButtonProps> = ({
       // Write and download the file
       XLSX.writeFile(workbook, filename);
 
-      console.log('Excel file exported successfully!');
+      // Show success notification
+      if (onSuccess) {
+        onSuccess(`Excel súbor "${filename}" bol úspešne exportovaný!`);
+      }
     } catch (error) {
       console.error('Error exporting to Excel:', error);
-      alert('Chyba pri exporte do Excel súboru. Skúste to znova.');
+      
+      // Show error notification
+      if (onError) {
+        onError('Chyba pri exporte do Excel súboru. Skúste to prosím znova.');
+      } else {
+        alert('Chyba pri exporte do Excel súboru. Skúste to znova.');
+      }
     }
   };
 

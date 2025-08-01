@@ -7,6 +7,8 @@ import Summary from './components/Summary';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import ToDoList from './components/ToDoList';
+import ToastContainer from './components/ToastContainer';
+import { useToast } from './hooks/useToast';
 import { db, serverTimestamp } from './firebase';
 
 
@@ -42,6 +44,7 @@ const App: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [toDoItems, setToDoItems] = useState<ToDoItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     const expensesColRef = collection(db, 'expenses');
@@ -103,6 +106,12 @@ const App: React.FC = () => {
     try {
       await addDoc(collection(db, 'expenses'), { ...expense, createdAt: serverTimestamp() });
 
+      // Show success notification
+      success(
+        'Výdavok pridaný!', 
+        `${expense.description} (${expense.amount}€) bol úspešne pridaný.`
+      );
+
       // Automatically remove from to-do list by description
       const todoColRef = collection(db, "todo_items");
       const todoQuery = query(todoColRef, where("text", "==", expense.description));
@@ -113,47 +122,96 @@ const App: React.FC = () => {
           batch.delete(doc.ref);
         });
         await batch.commit();
+        
+        success(
+          'Automaticky odstránené zo zoznamu!',
+          `${expense.description} bol odstránený zo zoznamu nákupov.`
+        );
       }
 
     } catch (e) {
       console.error("Error adding document: ", e);
+      error(
+        'Chyba pri pridávaní výdavku',
+        'Skúste to prosím znova. Ak problém pretrváva, kontaktujte podporu.'
+      );
     }
-  }, []);
+  }, [success, error]);
 
   const deleteExpense = useCallback(async (id: string) => {
     try {
+      // Get expense details for notification
+      const expenseToDelete = expenses.find(exp => exp.id === id);
       await deleteDoc(doc(db, 'expenses', id));
+      
+      success(
+        'Výdavok odstránený!', 
+        expenseToDelete ? `${expenseToDelete.description} bol úspešne odstránený.` : 'Výdavok bol úspešne odstránený.'
+      );
     } catch (e) {
       console.error("Error deleting document: ", e);
+      error(
+        'Chyba pri odstraňovaní výdavku',
+        'Skúste to prosím znova.'
+      );
     }
-  }, []);
+  }, [expenses, success, error]);
 
   const updateExpense = useCallback(async (id: string, newValues: Partial<Omit<Expense, 'id' | 'createdAt'>>) => {
     try {
       const expenseDocRef = doc(db, 'expenses', id);
       await updateDoc(expenseDocRef, newValues);
+      
+      success(
+        'Výdavok aktualizovaný!', 
+        'Zmeny boli úspešne uložené.'
+      );
     } catch (e) {
       console.error("Error updating document: ", e);
+      error(
+        'Chyba pri aktualizácii výdavku',
+        'Skúste to prosím znova.'
+      );
     }
-  }, []);
+  }, [success, error]);
 
   const addToDoItem = useCallback(async (text: string) => {
     if (text.trim()) {
       try {
         await addDoc(collection(db, 'todo_items'), { text: text.trim(), createdAt: serverTimestamp() });
+        
+        success(
+          'Položka pridaná do zoznamu!', 
+          `${text.trim()} bol pridaný do nákupného zoznamu.`
+        );
       } catch (e) {
         console.error("Error adding To-Do item: ", e);
+        error(
+          'Chyba pri pridávaní položky',
+          'Skúste to prosím znova.'
+        );
       }
     }
-  }, []);
+  }, [success, error]);
 
   const deleteToDoItem = useCallback(async (id: string) => {
     try {
+      // Get todo item details for notification
+      const todoToDelete = toDoItems.find(item => item.id === id);
       await deleteDoc(doc(db, 'todo_items', id));
+      
+      success(
+        'Položka odstránená!', 
+        todoToDelete ? `${todoToDelete.text} bol odstránený zo zoznamu.` : 'Položka bola úspešne odstránená.'
+      );
     } catch (e) {
       console.error("Error deleting To-Do item: ", e);
+      error(
+        'Chyba pri odstraňovaní položky',
+        'Skúste to prosím znova.'
+      );
     }
-  }, []);
+  }, [toDoItems, success, error]);
 
   const { totalSpent, remainingBudget } = useMemo(() => {
     const spent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
@@ -198,6 +256,8 @@ const App: React.FC = () => {
                 totalBudget={TOTAL_BUDGET}
                 totalSpent={totalSpent}
                 remainingBudget={remainingBudget}
+                onExportSuccess={(message) => success('Export úspešný!', message)}
+                onExportError={(message) => error('Chyba pri exporte', message)}
               />
             </div>
             <div className="lg:col-span-5">
@@ -214,6 +274,9 @@ const App: React.FC = () => {
           <p>Vytvorené s láskou pre spoločné ciele ❤️</p>
         </footer>
       </div>
+      
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </div>
   );
 };
