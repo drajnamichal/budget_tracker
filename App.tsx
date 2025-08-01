@@ -7,6 +7,7 @@ import Summary from './components/Summary';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import ToDoList from './components/ToDoList';
+import ExportButton from './components/ExportButton';
 import { db, serverTimestamp } from './firebase';
 
 
@@ -174,9 +175,19 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-slate-800 p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900">Sledovanie rozpočtu bytu</h1>
-          <p className="text-slate-600 mt-2">Majte prehľad o svojich investíciách do nového bývania.</p>
+        <header className="mb-8">
+          <div className="text-center">
+            <h1 className="text-4xl sm:text-5xl font-bold text-slate-900">Sledovanie rozpočtu bytu</h1>
+            <p className="text-slate-600 mt-2">Majte prehľad o svojich investíciách do nového bývania.</p>
+          </div>
+          <div className="flex justify-end mt-4">
+            <ExportButton 
+              expenses={expenses}
+              totalBudget={TOTAL_BUDGET}
+              totalSpent={totalSpent}
+              remainingBudget={remainingBudget}
+            />
+          </div>
         </header>
 
         <main className="space-y-8">
